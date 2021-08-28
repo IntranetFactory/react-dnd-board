@@ -1,14 +1,28 @@
 import { memo } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { ItemTypes } from './ItemTypes';
+import styled from 'styled-components';
 
-const style = {
-    border: '1px dashed gray',
-    padding: '0.5rem 1rem',
-    marginBottom: '.5rem',
-    backgroundColor: 'white',
-    cursor: 'move',
-};
+const BoardCardContainer = styled.div`
+    border: 1px dashed gray;
+    padding: 0.5rem 1rem;    
+    background-bolor: white;
+    cursor: move;
+    width: 300px;
+    margin: 12px;
+
+    &:nth-child(3n+1) {
+        order: 1;
+    }
+
+    &:nth-child(3n+2) {
+        order: 2;
+    }
+
+    &:nth-child(3n) {
+        order: 3;
+    }
+`;
 
 export const BoardCard = memo(function Card({ id, text, moveCard, findCard, }) {
 
@@ -40,7 +54,7 @@ export const BoardCard = memo(function Card({ id, text, moveCard, findCard, }) {
     }), [findCard, moveCard]);
 
     const opacity = isDragging ? 0 : 1;
-    return (<div style={{ ...style, opacity }}
+    return (<BoardCardContainer style={{ opacity }}
         ref={(node) => {
             drag(drop(node));
             if (!node) return;
@@ -49,5 +63,5 @@ export const BoardCard = memo(function Card({ id, text, moveCard, findCard, }) {
             if (node && node.childElementCount == 0) node.appendChild(m);
         }}>
         {id}. {text}
-    </div>);
+    </BoardCardContainer>);
 });

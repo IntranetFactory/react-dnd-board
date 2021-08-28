@@ -1,18 +1,26 @@
 import { memo, useCallback, useState } from 'react';
+import styled from 'styled-components';
 import { useDrop } from 'react-dnd';
 import { BoardCard } from './BoardCard';
 import update from 'immutability-helper';
 import { ItemTypes } from './ItemTypes';
 
-const style = {
-    width: 400,
-};
+const BoardLayoutContainer = styled.div`
+    width: 400px;
+    display: flex;
+	flex-flow: column wrap;
+	height: 900px;
 
-
+    &::before,
+	&::after {
+        content: "";
+        flex-basis: 100%;
+        width: 0;
+        order: 2;
+    }
+`;
 
 const BoardContainer = memo(({ items }) => {
-
-    console.log("xxxx", items);
 
     const [cards, setCards] = useState(items);
 
@@ -36,9 +44,9 @@ const BoardContainer = memo(({ items }) => {
 
     const [, drop] = useDrop(() => ({ accept: ItemTypes.CARD }));
 
-    return (<div ref={drop} style={style}>
+    return (<BoardLayoutContainer ref={drop}>
         {cards.map((card) => (<BoardCard key={card.id} id={`${card.id}`} text={card.text} moveCard={moveCard} findCard={findCard} />))}
-    </div>);
+    </BoardLayoutContainer>);
 });
 
 export default BoardContainer;
