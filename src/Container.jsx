@@ -3,9 +3,11 @@ import { useDrop } from 'react-dnd';
 import { Card } from './Card';
 import update from 'immutability-helper';
 import { ItemTypes } from './ItemTypes';
+
 const style = {
     width: 400,
 };
+
 const ITEMS = [
     {
         id: 1,
@@ -25,15 +27,39 @@ const ITEMS = [
     },
     {
         id: 5,
-        text: 'Spam in Twitter and IRC to promote it',
+        text: 'Spam in Twitter and IRC to promote it (note that this element is taller than the others). Spam in Twitter and IRC to promote it (note that this element is taller than the others)',
     },
     {
         id: 6,
-        text: '???',
+        text: '??? Spam in Twitter and IRC to promote it (note that this element is taller than the others)',
     },
     {
         id: 7,
         text: 'PROFIT',
+    },
+    {
+        id: 8,
+        text: 'Write a cool JS library. Spam in Twitter and IRC to promote it (note that this element is taller than the others). Spam in Twitter and IRC to promote it (note that this element is taller than the others)',
+    },
+    {
+        id: 9,
+        text: 'Make it generic enough',
+    },
+    {
+        id: 10,
+        text: 'Write README',
+    },
+    {
+        id: 11,
+        text: 'Create some examples',
+    },
+    {
+        id: 12,
+        text: 'Spam in Twitter and IRC to promote it (note that this element is taller than the others)',
+    },
+    {
+        id: 13,
+        text: '???',
     },
 ];
 export const Container = memo(function Container() {
@@ -56,6 +82,6 @@ export const Container = memo(function Container() {
     }, [findCard, cards, setCards]);
     const [, drop] = useDrop(() => ({ accept: ItemTypes.CARD }));
     return (<div ref={drop} style={style}>
-			{cards.map((card) => (<Card key={card.id} id={`${card.id}`} text={card.text} moveCard={moveCard} findCard={findCard}/>))}
-		</div>);
+        {cards.map((card) => (<Card key={card.id} id={`${card.id}`} text={card.text} moveCard={moveCard} findCard={findCard} />))}
+    </div>);
 });
