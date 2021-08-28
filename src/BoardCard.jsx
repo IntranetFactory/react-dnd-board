@@ -10,7 +10,7 @@ const style = {
     cursor: 'move',
 };
 
-export const Card = memo(function Card({ id, text, moveCard, findCard, }) {
+export const BoardCard = memo(function Card({ id, text, moveCard, findCard, }) {
 
     const originalIndex = findCard(id).index;
     const [{ isDragging }, drag] = useDrag(() => ({
@@ -27,6 +27,7 @@ export const Card = memo(function Card({ id, text, moveCard, findCard, }) {
             }
         },
     }), [id, originalIndex, moveCard]);
+
     const [, drop] = useDrop(() => ({
         accept: ItemTypes.CARD,
         canDrop: () => false,
@@ -38,25 +39,15 @@ export const Card = memo(function Card({ id, text, moveCard, findCard, }) {
         },
     }), [findCard, moveCard]);
 
-/*
- ref={(n) => {
-            if (!n) return;
-            var m = document.createElement("div");
-            m.innerHTML = Math.random().toFixed(10);
-            if (n && n.childElementCount==0) n.appendChild(m);
-        }}
-*/
-
     const opacity = isDragging ? 0 : 1;
     return (<div style={{ ...style, opacity }}
-    ref={(node) => {
-        drag(drop(node));
-        if (!node) return;
-        var m = document.createElement("div");
-        m.innerHTML = Math.random().toFixed(10);
-        if (node && node.childElementCount==0) node.appendChild(m);
-    }}
-    >
-        {id}. {text}       
+        ref={(node) => {
+            drag(drop(node));
+            if (!node) return;
+            var m = document.createElement("div");
+            m.innerHTML = Math.random().toFixed(10);
+            if (node && node.childElementCount == 0) node.appendChild(m);
+        }}>
+        {id}. {text}
     </div>);
 });

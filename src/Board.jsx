@@ -1,6 +1,6 @@
 import { memo, useCallback, useState } from 'react';
 import { useDrop } from 'react-dnd';
-import { Card } from './Card';
+import { BoardCard } from './BoardCard';
 import update from 'immutability-helper';
 import { ItemTypes } from './ItemTypes';
 
@@ -62,7 +62,8 @@ const ITEMS = [
         text: '???',
     },
 ];
-export const Container = memo(function Container() {
+
+export const Board = memo(function Container() {
     const [cards, setCards] = useState(ITEMS);
     const findCard = useCallback((id) => {
         const card = cards.filter((c) => `${c.id}` === id)[0];
@@ -81,7 +82,8 @@ export const Container = memo(function Container() {
         }));
     }, [findCard, cards, setCards]);
     const [, drop] = useDrop(() => ({ accept: ItemTypes.CARD }));
+
     return (<div ref={drop} style={style}>
-        {cards.map((card) => (<Card key={card.id} id={`${card.id}`} text={card.text} moveCard={moveCard} findCard={findCard} />))}
+        {cards.map((card) => (<BoardCard key={card.id} id={`${card.id}`} text={card.text} moveCard={moveCard} findCard={findCard} />))}
     </div>);
 });
