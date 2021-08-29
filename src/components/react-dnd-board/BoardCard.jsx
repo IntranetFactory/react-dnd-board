@@ -11,17 +11,14 @@ const BoardCardContainer = styled.div`
     width: 300px;
     margin: 12px;
 
-    &:nth-child(3n+1) {
-        order: 1;
-    }
+    .board3cols &:nth-child(3n+1) { order: 1; }
+    .board3cols &:nth-child(3n+2) { order: 2; }
+    .board3cols &:nth-child(3n) { order: 3; }
 
-    &:nth-child(3n+2) {
-        order: 2;
-    }
-
-    &:nth-child(3n) {
-        order: 3;
-    }
+    .board4cols &:nth-of-type(4n+1) { order: 1; }
+    .board4cols &:nth-of-type(4n+2) { order: 2; }
+    .board4cols &:nth-of-type(4n+3) { order: 3; }
+    .board4cols &:nth-of-type(4n)   { order: 4; }
 `;
 
 export const BoardCard = memo(function Card({ id, text, moveCard, findCard, }) {

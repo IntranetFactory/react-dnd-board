@@ -1,6 +1,6 @@
 
 	import { render } from 'react-dom'
-	import Board from './Board';
+	import Board from './components/react-dnd-board';
 
 	const ITEMS = [
 		{
