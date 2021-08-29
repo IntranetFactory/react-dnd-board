@@ -6,10 +6,10 @@ import update from 'immutability-helper';
 import { ItemTypes } from './ItemTypes';
 
 const BoardLayoutContainer = styled.div`
-    width: 400px;
+    width: 100%;
     display: flex;
 	flex-flow: column wrap;
-	height: 900px;
+	height: 2000px;
 
 `;
 
@@ -22,6 +22,11 @@ const ColsEnd = styled.div`
     content: "";
     padding: 0;
 
+
+    
+    .board2cols &:nth-child(2n+1) { order: 1; }
+    .board2cols &:nth-child(2n) { order: 2; }
+
     .board3cols &:nth-child(3n+1) { order: 1; }
     .board3cols &:nth-child(3n+2) { order: 2; }
     .board3cols &:nth-child(3n) { order: 3; }
@@ -30,6 +35,12 @@ const ColsEnd = styled.div`
     .board4cols &:nth-of-type(4n+2) { order: 2; }
     .board4cols &:nth-of-type(4n+3) { order: 3; }
     .board4cols &:nth-of-type(4n)   { order: 4; }
+
+    .board5cols &:nth-of-type(5n+1) { order: 1; }
+    .board5cols &:nth-of-type(5n+2) { order: 2; }
+    .board5cols &:nth-of-type(5n+3) { order: 3; }
+    .board5cols &:nth-of-type(5n+4) { order: 4; }
+    .board5cols &:nth-of-type(5n)   { order: 5; }
 `;
 
 

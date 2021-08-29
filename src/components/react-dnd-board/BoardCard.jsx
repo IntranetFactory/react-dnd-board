@@ -11,6 +11,9 @@ const BoardCardContainer = styled.div`
     width: 300px;
     margin: 12px;
 
+    .board2cols &:nth-child(2n+1) { order: 1; }
+    .board2cols &:nth-child(2n) { order: 2; }
+
     .board3cols &:nth-child(3n+1) { order: 1; }
     .board3cols &:nth-child(3n+2) { order: 2; }
     .board3cols &:nth-child(3n) { order: 3; }
@@ -19,6 +22,12 @@ const BoardCardContainer = styled.div`
     .board4cols &:nth-of-type(4n+2) { order: 2; }
     .board4cols &:nth-of-type(4n+3) { order: 3; }
     .board4cols &:nth-of-type(4n)   { order: 4; }
+
+    .board5cols &:nth-of-type(5n+1) { order: 1; }
+    .board5cols &:nth-of-type(5n+2) { order: 2; }
+    .board5cols &:nth-of-type(5n+3) { order: 3; }
+    .board5cols &:nth-of-type(5n+4) { order: 4; }
+    .board5cols &:nth-of-type(5n)   { order: 5; }
 `;
 
 export const BoardCard = memo(function Card({ id, text, moveCard, findCard, }) {
