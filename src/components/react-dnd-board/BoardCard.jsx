@@ -1,6 +1,8 @@
-import { memo } from 'react';
+import { memo, useState, useEffect } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { ItemTypes } from './ItemTypes';
+import { dispatch } from 'use-bus';
+import useResizeAware from 'react-resize-aware';
 import styled from 'styled-components';
 
 const BoardCardContainer = styled.div`
@@ -8,8 +10,7 @@ const BoardCardContainer = styled.div`
     padding: 0.5rem 1rem;    
     background-bolor: white;
     cursor: move;
-    width: 300px;
-    margin: 12px;
+    width: 300px;    
 
     .board2cols &:nth-child(2n+1) { order: 1; }
     .board2cols &:nth-child(2n) { order: 2; }
@@ -30,7 +31,10 @@ const BoardCardContainer = styled.div`
     .board5cols &:nth-of-type(5n)   { order: 5; }
 `;
 
-export const BoardCard = memo(function Card({ id, text, moveCard, findCard, }) {
+export const BoardCard = memo(function Card({ id, text, moveCard, findCard }) {
+
+    const [resizeListener, sizes] = useResizeAware();
+    const [cardHeight, setCardHeight] = useState(0);
 
     const originalIndex = findCard(id).index;
     const [{ isDragging }, drag] = useDrag(() => ({
@@ -59,15 +63,25 @@ export const BoardCard = memo(function Card({ id, text, moveCard, findCard, }) {
         },
     }), [findCard, moveCard]);
 
+    var newHeight = sizes.height || 500;
+    useEffect(() => {
+        if (cardHeight != newHeight) {
+            setCardHeight(newHeight);
+            dispatch({ type: 'card.change.height', id: id, height: newHeight });
+        }
+    });
+
     const opacity = isDragging ? 0 : 1;
-    return (<BoardCardContainer style={{ opacity }}
+    return (<BoardCardContainer style={{ opacity, position: "relative" }}
         ref={(node) => {
             drag(drop(node));
             if (!node) return;
+            node.setAttribute("card-height", newHeight);            
             var m = document.createElement("div");
             m.innerHTML = Math.random().toFixed(10);
-            if (node && node.childElementCount == 0) node.appendChild(m);
+            if (node && node.childElementCount < 2) node.appendChild(m);
         }}>
+        {resizeListener}
         {id}. {text}
     </BoardCardContainer>);
 });
