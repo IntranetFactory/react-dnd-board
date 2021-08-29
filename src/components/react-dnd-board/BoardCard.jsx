@@ -31,7 +31,7 @@ const BoardCardContainer = styled.div`
     .board5cols &:nth-of-type(5n)   { order: 5; }
 `;
 
-export const BoardCard = memo(function Card({ id, text, moveCard, findCard }) {
+export const BoardCard = memo(function Card({ id, text, persistCards, moveCard, findCard }) {
 
     const [resizeListener, sizes] = useResizeAware();
     const [cardHeight, setCardHeight] = useState(0);
@@ -48,6 +48,8 @@ export const BoardCard = memo(function Card({ id, text, moveCard, findCard }) {
             const didDrop = monitor.didDrop();
             if (!didDrop) {
                 moveCard(droppedId, originalIndex);
+            } else {
+                dispatch({ type: 'cards.persist' });
             }
         },
     }), [id, originalIndex, moveCard]);
@@ -76,7 +78,8 @@ export const BoardCard = memo(function Card({ id, text, moveCard, findCard }) {
         ref={(node) => {
             drag(drop(node));
             if (!node) return;
-            node.setAttribute("card-height", newHeight);            
+            node.setAttribute("card-height", newHeight);
+            node.setAttribute("card-id", id);
             var m = document.createElement("div");
             m.innerHTML = Math.random().toFixed(10);
             if (node && node.childElementCount < 2) node.appendChild(m);

@@ -59,9 +59,22 @@ const BoardContainer = memo(({ items, cols }) => {
     // compute largest col height + largest card height
     useBus('card.change.height', (event) => {
         const card = cards.filter((c) => `${c.id}` === event.id)[0];
-        if(card) card.height = event.height + 4;  // +4  rounding save guard
+        if (card) card.height = event.height + 4;  // +4  rounding save guard
         updateContainerHeight();
         //console.log(event);
+    });
+
+
+    // persist change 
+    useBus('cards.persist', (event) => {
+        // cards is not updated yet after drop, so we query the DOM
+        let nodes = boardSizingContrainerRef.current.children[0].children;
+        var cardOrder = [];
+        for (let i = 0; i < nodes.length; i++) {
+            if(!nodes[i].classList.contains("colEnd")) cardOrder.push(nodes[i].getAttribute('card-id'));
+        }
+        console.log(cardOrder);
+        
     });
 
     function updateContainerHeight() {
@@ -70,24 +83,24 @@ const BoardContainer = memo(({ items, cols }) => {
         let maxColHeight = 0;
         let colHeight = [];
         for (let i = 0; i < cols; i++) colHeight[i] = 0;
-    
+
         for (let i = 0; i < cards.length; i++) {
-            let card = cards[i];
+            let card = cards[i];            
             let height = Number(card.height || 500);
             if (height > maxCardHeight) maxCardHeight = height;
-            let col = i%cols;
+            let col = i % cols;
             colHeight[col] = colHeight[col] + height;
-            if(colHeight[col]>maxColHeight) maxColHeight = colHeight[col];
+            if (colHeight[col] > maxColHeight) maxColHeight = colHeight[col];
             //console.log(i,col+1, height, maxColHeight);
         }
         //console.log("HEIGHT",maxColHeight,maxCardHeight);        
         newContainerHeight = maxColHeight + maxCardHeight;
-        if(newContainerHeight != containerHeight) setContainerHeight(newContainerHeight);
+        if (newContainerHeight != containerHeight) setContainerHeight(newContainerHeight);
     }
 
     useEffect(() => {
         //console.log("useEffect");
-        updateContainerHeight();        
+        updateContainerHeight();
     });
 
     const findCard = useCallback((id) => {
@@ -97,6 +110,8 @@ const BoardContainer = memo(({ items, cols }) => {
             index: cards.indexOf(card),
         };
     }, [cards]);
+
+
 
     const moveCard = useCallback((id, atIndex) => {
         const { card, index } = findCard(id);
@@ -119,12 +134,12 @@ const BoardContainer = memo(({ items, cols }) => {
     }
 
     // console.log("CH",containerHeight);
-
+ 
     return (
-        <BoardSizingContainer ref={boardSizingContrainerRef} style={{height:`${newContainerHeight}px`}}>
+        <BoardSizingContainer ref={boardSizingContrainerRef} style={{ height: `${newContainerHeight}px` }}>
             <BoardLayoutContainer ref={drop} className={`board${cols}cols`}>
                 {cards.map((card) => (<BoardCard key={card.id} id={`${card.id}`} text={card.text} moveCard={moveCard} findCard={findCard} />))}
-                {colsEnd.map((colEnd) => (<ColsEnd key={colEnd.key}></ColsEnd>))}
+                {colsEnd.map((colEnd) => (<ColsEnd key={colEnd.key} className={"colEnd"}></ColsEnd>))}
             </BoardLayoutContainer>
         </BoardSizingContainer>
     );

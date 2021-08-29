@@ -17,14 +17,10 @@ const Board = (props) => {
 
     if (cols != winCols) setCols(winCols);
 
-    console.log(windowWidth, winCols);
-
     var style = {
         width: winCols * colWidth,
         margin: '0 auto'
     }
-
-    console.log(style);
 
     return (
         <DndProvider backend={HTML5Backend}>
