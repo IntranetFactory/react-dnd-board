@@ -6,7 +6,7 @@ import BoardContainer from './BoardContainer'
 
 const Board = (props) => {
 
-    const colWidth = 450;
+    const colWidth = 334;
 
     const [cols, setCols] = useState(0);
     const windowWidth = useWindowWidth();

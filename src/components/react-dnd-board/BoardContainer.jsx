@@ -1,4 +1,4 @@
-import { memo, useCallback, useState, useRef, useEffect } from 'react';
+import React, { memo, useCallback, useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useDrop } from 'react-dnd';
 import { BoardCard } from './BoardCard';
@@ -49,9 +49,13 @@ const ColsEnd = styled.div`
 
 const BoardContainer = memo(({ items, cols }) => {
 
-    const [cards, setCards] = useState(items);
+    const [cards, setCards] = useState([]);
     const [containerHeight, setContainerHeight] = useState(0);
     const boardSizingContrainerRef = useRef();
+
+    useEffect(() => {
+        setCards(items);
+    }, [items]);
 
     // console.log("COLS" ,cols);
     var newContainerHeight = containerHeight;
@@ -133,7 +137,7 @@ const BoardContainer = memo(({ items, cols }) => {
         colsEnd.push({ key: "end" + i });
     }
 
-    // console.log("CH",containerHeight);
+    console.log("CH",containerHeight);
  
     return (
         <BoardSizingContainer ref={boardSizingContrainerRef} style={{ height: `${newContainerHeight}px` }}>
